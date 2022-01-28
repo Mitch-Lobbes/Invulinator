@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import ElementNotInteractableException
 #from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
 import csv
 import random
 import re
@@ -17,6 +18,9 @@ import time
 
 
 #bestand ophalen
+
+
+
 def get_testfile(path):
     """Haalt het bestand met testscenario's op.
 
@@ -485,19 +489,21 @@ def getvraag(driver):
 #-----------------------------------------------------------------------#
 # runnen van het script                                                 #
 #-----------------------------------------------------------------------#
-
-driver = webdriver.Firefox('C:\Python projects\Survey testbot\geckodriver')
+service = Service(r'C:\Users\mlobbes\Documents\Chrome Driver For Selenium\chromedriver.exe')
+options = webdriver.ChromeOptions()
+driver = webdriver.Chrome(service=service, options=options)
 driver.implicitly_wait(1)
-bestand = get_testfile(r"C:\Werk\SK123\NSE2022 Input InvulBot - invullinator test3 csv - server1.csv")
+bestand = get_testfile(r"C:\Users\mlobbes\Documents\Selenium Tutorial\surveytester\test_nse.csv")
 counter = 0
 
 for scenario in bestand:
+    print(f"{scenario}")
     counter += 1
     if counter < 228 :
-         continue
+         pass
     print('login ' + str(counter))
     #inloggen(driver, 'https://q.crowdtech.com/WKG1f3C-aEScDWnNZA_MJw',scenario['Login'])
-    driver.get(scenario['Loginlinks'])
+    driver.get('https://q.crowdtech.com/WKG1f3C-aEScDWnNZA_MJw')
     endpage = hasXpath(driver, 'html/body/div/div[@endpage=""]')
     while endpage == False:
         vx = getvraag(driver)
